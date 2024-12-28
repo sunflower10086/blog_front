@@ -1,35 +1,10 @@
-<h1 align="center"> Curve </h1>
-<p align="center">A Simple VitePress Theme</p>
-<p align="center">
-  <img src="https://github.com/imsyy/vitepress-theme-curve/assets/42232682/bed62689-cfd8-4d98-b946-24555d4ce1fb" alt="curve-logo" />
-</p>
-
----
+本博客基于 [VitePress](https://vitepress.dev/) 构建，主题基于 [vitepress-theme-curve](https://github.com/imsyy/vitepress-theme-curve) 构建。
 
 Preview: 👻 [無名小栈](https://blog.imsyy.top/)
 
 Docs: 📖 [主题文档](https://blog.imsyy.top/pages/categories/%E4%B8%BB%E9%A2%98%E6%96%87%E6%A1%A3)
 
-> [!NOTE]
-> 该主题本意为自用，所以部分配置可能并不完善，包括评论系统的支持，目前仅支持 Artalk，如有其他需求，可提交 pr
-
-## Hello
-
-🎉 你好啊，很高兴你选择了 [vitepress-theme-curve](https://github.com/imsyy/vitepress-theme-curve)，你可以查看 [主题文档](https://blog.imsyy.top/pages/categories/%E4%B8%BB%E9%A2%98%E6%96%87%E6%A1%A3) 以了解更多，如果你在使用本主题时遇到问题，你可以在 [GitHub](https://github.com/imsyy/vitepress-theme-curve) 中正确的提交 [issues](https://github.com/imsyy/vitepress-theme-curve/issues) 以获取社区的帮助。
-
-## 快速开始
-
-若您有修改主题的需求，请确保您拥有基础的前端知识，最好能掌握 [Vue.js](https://vuejs.org/) 框架的相关知识，并确保阅读了 `VitePress` 的 [官方文档](https://vitepress.dev/zh/guide/what-is-vitepress)
-
-### 书写新的文章
-
-你可以直接在站点根目录中的 `posts` 文件夹中直接新建 `markdown` 文件来书写，您的文件路径即为实际生成的网址路径。
-
-### 添加新的页面
-
-你可以直接在站点根目录中的 `pages` 文件夹中直接新建 `markdown` 文件来实现新建页面，您的文件路径即为实际生成的网址路径。
-
-主题中已经内置了几个常用页面以供参考。
+-------
 
 ### 主题配置
 
