@@ -72,7 +72,7 @@ export const formatTimestamp = (timestamp) => {
   let today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   // 获取昨天0点
   let yesterday = new Date(today.getTime() - 1000 * 60 * 60 * 24);
-  let targetDate = new Date(timestamp);
+  let targetDate = new Date(timestamp * 1000);
   // 是否为昨天
   if (targetDate >= yesterday && targetDate < today) {
     return "1天前";

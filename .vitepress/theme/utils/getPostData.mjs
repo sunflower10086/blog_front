@@ -1,8 +1,4 @@
-import { generateId } from "./commonTools.mjs";
-import { getPostList } from "../api/post.js";
-import { globby } from "globby";
-import matter from "gray-matter";
-import fs from "fs-extra";
+import { getPostList, getPostDetail } from "../api/post.js";
 
 /**
  * 获取 posts 目录下所有 Markdown 文件的路径
@@ -45,60 +41,30 @@ const comparePostPriority = (a, b) => {
  * 获取所有文章，读取其内容并解析 front matter
  * @returns {Promise<Object[]>} - 文章对象数组
  */
-export const getAllPosts = async () => {
+export async function getAllPosts() {
   try {
-    console.log('开始获取文章列表...');
-    const resp = await getPostList(1, 5);
-    console.log('获取到的响应:', resp.data);
-
-    // 获取所有 Markdown 文件的路径
-    let paths = await getPostMDFilePaths();
-    // 读取和处理每个 Markdown 文件的内容
-    let posts = await Promise.all(
-      paths.map(async (item) => {
-        try {
-          // 读取文件内容
-          const content = await fs.readFile(item, "utf-8");
-          // 文件的元数据
-          const stat = await fs.stat(item);
-          // 获取文件创建时间和最后修改时间
-          const { birthtimeMs, mtimeMs } = stat;
-          // 解析 front matter
-          const { data } = matter(content);
-          const { date, categories, description, tags, top, cover } = data;
-          const title = "test"
-          // 计算文章的过期天数
-          const expired = Math.floor(
-            (new Date().getTime() - new Date(date).getTime()) / (1000 * 60 * 60 * 24),
-          );
-          // 返回文章对象
-          return {
-            id: generateId(item),
-            title: title || "未命名文章",
-            date: date ? new Date(date).getTime() : birthtimeMs,
-            lastModified: mtimeMs,
-            expired,
-            tags,
-            categories,
-            description,
-            regularPath: `/${item.replace(".md", ".html")}`,
-            top,
-            cover,
-          };
-        } catch (error) {
-          console.error(`处理文章文件 '${item}' 时出错:`, error);
-          throw error;
-        }
-      }),
-    );
-    // 根据日期排序文章
-    posts.sort(comparePostPriority);
-    return posts;
+    // 使用 getPostList 获取文章数据
+    const response = await getPostList()
+    
+    // 确保返回数据
+    if (response && response.data) {
+      return {
+        posts: response.data.posts || [],
+        total: response.data.total || 0,
+      }
+    }
+    
+    return []
   } catch (error) {
-    console.error("获取所有文章时出错:", error);
-    throw error;
+    console.error('获取文章列表失败:', error)
+    return []
   }
-};
+}
+
+export const getPostContent = async (id) => {
+  const response = await getPostDetail(id);
+  return response.data.content;
+}
 
 /**
  * 获取所有标签及其相关文章的统计信息

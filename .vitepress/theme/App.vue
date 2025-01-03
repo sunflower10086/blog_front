@@ -10,7 +10,7 @@
   <!-- 主内容 -->
   <main :class="['mian-layout', { loading: loadingStatus, 'is-post': isPostPage }]">
     <!-- 404 -->
-    <NotFound v-if="page.isNotFound" />
+<!--    <NotFound v-if="page.isNotFound" />-->
     <!-- 首页 -->
     <Home v-if="frontmatter.layout === 'home'" showHeader />
     <!-- 页面 -->
@@ -57,7 +57,8 @@ const rightMenuRef = ref(null);
 // 判断是否为文章页面
 const isPostPage = computed(() => {
   const routePath = decodeURIComponent(route.path);
-  return routePath.includes("/posts/");
+  console.log("isPostPage 当前路径：", routePath);
+  return routePath.startsWith("/post/");
 });
 
 // 开启右键菜单

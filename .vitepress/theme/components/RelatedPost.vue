@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { generateId } from "@/utils/commonTools";
+import { getPostId } from '../api/common.js';
 import { shufflePost } from "@/utils/helper";
 
 const router = useRouter();
@@ -30,13 +30,15 @@ const getRelatedData = () => {
   // 指定分类数据
   const postData = theme.value.categoriesData?.[catName]?.articles;
   // 本篇索引
-  const postId = generateId(page.value?.filePath);
-  // 过滤掉当前文章
-  const filteredPosts = postData.filter((post) => post.id !== postId);
-  // 取出两篇文章
-  relatedData.value = filteredPosts.slice(0, 2);
-  if (relatedData.value.length === 0) {
-    relatedData.value = null;
+  const postId = getPostId(page.value.relativePath);
+  if (postData) {
+    // 过滤掉当前文章
+    const filteredPosts = postData.filter((post) => post.id !== postId);
+    // 取出两篇文章
+    relatedData.value = filteredPosts.slice(0, 2);
+    if (relatedData.value.length === 0) {
+      relatedData.value = null;
+    }
   }
 };
 

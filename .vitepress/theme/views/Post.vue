@@ -60,6 +60,7 @@
         <ArticleGPT />
         <!-- 文章内容 -->
         <Content id="page-content" class="markdown-main-style" />
+        <div>{{ postMetaData.content }}</div>
         <!-- 参考资料 -->
         <References />
         <!-- 版权 -->
@@ -100,22 +101,61 @@
 </template>
 
 <script setup>
+import { useData, useRoute } from 'vitepress'
 import { formatTimestamp } from "@/utils/helper";
-import { generateId } from "@/utils/commonTools";
 import initFancybox from "@/utils/initFancybox";
 import { Content } from "vitepress";
+import { getPostContent } from '@/utils/getPostData'
+import { useRouter } from 'vitepress'
+import { getPostId } from '../api/common.js'
+import loading from "../components/Loading.vue";
+
+const router = useRouter()
 
 const { page, theme, frontmatter } = useData();
 
 // 评论元素
 const commentRef = ref(null);
 
-// 获取对应文章数据
-const postMetaData = computed(() => {
-  const postId = generateId(page.value.relativePath);
-  console.log(theme.value.postData);
-  return theme.value.postData.find((item) => item.id === postId);
-});
+const postMetaData = ref({
+  title: "未命名文章",
+  content: "test content"
+})
+
+// 获取文章详情
+const fetchPostDetail = async (path) => {
+  loading.value = true
+
+  try {
+    // 处理路径，移除开头和结尾的斜杠
+    // const content = await getPostContent(normalizedPath)
+    const content = "test content"
+    if (content) {
+       postMetaData.value.content = content
+    } else {
+      console.error('获取文章详情失败')
+    }
+  } catch (err) {
+    console.error('获取文章详情失败:', err)
+  } finally {
+    loading.value = false
+  }
+}
+
+
+
+// 在组件挂载时获取文章数据
+onMounted(() => {
+  if (page.value.relativePath) {
+    let postId = getPostId(page.value.relativePath)
+    console.log(page.value);
+    console.log(postId);
+    // 使用 page.relativePath 作为文章标识
+    fetchPostDetail(postId)
+  } else {
+    // router.go('/404')
+  }
+})
 
 onMounted(() => {
   initFancybox(theme.value);

@@ -6,7 +6,7 @@
       :key="index"
       :class="['post-item', 's-card', 'hover',{ simple, cover: showCover(item),[`cover-${layoutType}`]: showCover(item) }]"
       :style="{ animationDelay: `${0.4 + index / 10}s` }"
-      @click="toPost(item.regularPath)"
+      @click="toPost(item.id)"
     >
       <div v-if="!simple && showCover(item)" class="post-cover">
         <img :src="getCover(item)" :alt="item.title">
@@ -40,7 +40,7 @@
               {{ tags }}
             </span>
           </div>
-          <span class="post-time">{{ formatTimestamp(item?.date) }}</span>
+          <span class="post-time">{{ formatTimestamp(item?.created_at) }}</span>
         </div>
       </div>
     </div>
@@ -66,6 +66,8 @@ const props = defineProps({
     default: false,
   },
 });
+
+console.log("文章列表", props.listData)
 
 const { theme: themeConfig } = useData()
 
@@ -98,14 +100,15 @@ const getCover = ({ cover: itemCover }) => {
 }
 
 // 前往文章
-const toPost = (path) => {
+const toPost = (postId) => {
   // 记录滚动位置
   if (typeof window !== "undefined") {
     const scrollY = window.scrollY;
     store.lastScrollY = scrollY;
   }
+  console.log("跳转页面", postId);
   // 跳转文章
-  router.go(path);
+  router.go(`/post/${postId}`);
 };
 </script>
 

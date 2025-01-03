@@ -8,6 +8,12 @@ export const getHitokoto = async () => {
   return hitokoto;
 };
 
+// 从路径中提取文章ID
+export const getPostId = (path) => {
+  const match = path.match(/post\/(.+)\.md$/)
+  return match ? match[1] : null
+}
+
 /**
  * 获取给定网址的站点图标和描述
  * @param {string} url - 站点 URL

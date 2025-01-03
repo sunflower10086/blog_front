@@ -1,7 +1,7 @@
 import { getAllPosts, getAllType } from "../../.vitepress/theme/utils/getPostData.mjs";
 
 const postData = await getAllPosts();
-const tagsData = getAllType(postData);
+const tagsData = getAllType(postData.posts);
 
 // 标签动态路由
 export default {

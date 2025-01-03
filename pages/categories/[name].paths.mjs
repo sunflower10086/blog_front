@@ -1,7 +1,7 @@
 import { getAllPosts, getAllCategories } from "../../.vitepress/theme/utils/getPostData.mjs";
 
 const postData = await getAllPosts();
-const categoriesData = getAllCategories(postData);
+const categoriesData = getAllCategories(postData.posts);
 
 // 分类动态路由
 export default {

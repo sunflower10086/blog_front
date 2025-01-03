@@ -13,7 +13,7 @@
           :total="allListTotal"
           :page="Number(page)"
           :limit="postSize"
-          :useParams="showCategories || showTags ? true : false"
+          :useParams="!!(showCategories || showTags)"
           :routePath="
             showCategories
               ? `/pages/categories/${showCategories}`
@@ -31,6 +31,10 @@
 
 <script setup>
 import { mainStore } from "@/store";
+import PostList from "../components/List/PostList.vue";
+import Pagination from "../components/Pagination.vue";
+import TypeBar from "../components/List/TypeBar.vue";
+import Banner from "../components/Banner.vue";
 
 const { theme } = useData();
 const store = mainStore();
@@ -85,6 +89,7 @@ const getCurrentPage = () => {
 };
 
 // 根据页数计算列表数据
+// todo: 动态的获取后端数据
 const postData = computed(() => {
   const page = getCurrentPage();
   console.log("当前页数：", page);
@@ -99,11 +104,14 @@ const postData = computed(() => {
   }
   // 文章数据
   else {
-    data = theme.value.postData;
+    data = theme.value.postData.posts;
   }
+
   // 返回列表
   return data ? data.slice(page * postSize, page * postSize + postSize) : [];
 });
+
+
 
 // 恢复滚动位置
 const restoreScrollY = (val) => {

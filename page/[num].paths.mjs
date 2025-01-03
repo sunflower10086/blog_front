@@ -8,7 +8,7 @@ const themeConfig = await getThemeConfig();
 const postsPerPage = themeConfig.postSize;
 
 // 计算总页数
-const totalPages = Math.ceil(postData.length / postsPerPage);
+const totalPages = postData.total
 
 // 文章分页动态路由
 export default {

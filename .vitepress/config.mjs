@@ -43,9 +43,9 @@ export default withPwa(
       ...themeConfig,
       // 必要数据
       postData: postData,
-      tagsData: getAllType(postData),
-      categoriesData: getAllCategories(postData),
-      archivesData: getAllArchives(postData),
+      tagsData: getAllType(postData.posts),
+      categoriesData: getAllCategories(postData.posts),
+      archivesData: getAllArchives(postData.posts),
     },
     // markdown
     markdown: {
@@ -61,6 +61,7 @@ export default withPwa(
     srcExclude: ["**/README.md", "**/TODO.md"],
     // transformHead
     transformPageData: async (pageData) => {
+      console.log("transformPageData", pageData)
       // canonical URL
       const canonicalUrl = `${themeConfig.siteMeta.site}/${pageData.relativePath}`
         .replace(/index\.md$/, "")
@@ -69,12 +70,30 @@ export default withPwa(
       pageData.frontmatter.head.push(["link", { rel: "canonical", href: canonicalUrl }]);
     },
     // transformHtml
-    transformHtml: (html) => {
-      return jumpRedirect(html, themeConfig);
+    transformHtml: (html, id) => {
+      if (id.startsWith('post/')) {
+        return html.replace(
+          /<\/head>/,
+          `
+          <meta name="description" content="文章详情页">
+          <meta name="viewport" content="width=device-width,initial-scale=1">
+          </head>
+          `
+        )
+      }
+      return html
     },
     // buildEnd
     buildEnd: async (config) => {
-      await createRssFile(config, themeConfig);
+      try {
+        // 提前初始化 posts
+        const posts = await getAllPosts()
+        
+        // 后续处理 posts
+        await createRssFile(config, themeConfig);
+      } catch (error) {
+        console.error('获取文章列表出错:', error)
+      }
     },
     // vite
     vite: {
@@ -193,6 +212,10 @@ export default withPwa(
           },
         ],
       },
+    },
+    // 添加动态路由处理
+    rewrites: {
+      'post/:id': 'post/:id.html'
     },
   }),
 );
