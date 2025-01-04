@@ -126,6 +126,13 @@ export default withPwa(
       // 服务器
       server: {
         port: 9877,
+        proxy: {
+          '/api': {
+            target: 'http://127.0.0.1:8000',
+            changeOrigin: true,
+            rewrite: (path) => path.replace(/^\/api/, '')
+          }
+        }
       },
       // 构建
       build: {

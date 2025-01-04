@@ -10,7 +10,7 @@
   <!-- 主内容 -->
   <main :class="['mian-layout', { loading: loadingStatus, 'is-post': isPostPage }]">
     <!-- 404 -->
-<!--    <NotFound v-if="page.isNotFound" />-->
+   <NotFound v-if="route.path === '/404'" />
     <!-- 首页 -->
     <Home v-if="frontmatter.layout === 'home'" showHeader />
     <!-- 页面 -->
@@ -18,11 +18,11 @@
       <!-- 文章页面 -->
       <Post v-if="isPostPage" />
       <!-- 普通页面 -->
-      <Page v-else-if="!page.isNotFound" />
+      <Page v-else-if="route.path != '/404'" />
     </template>
   </main>
   <!-- 页脚 -->
-  <FooterLink v-show="!loadingStatus" :showBar="isPostPage && !page.isNotFound" />
+  <FooterLink v-show="!loadingStatus" :showBar="isPostPage && route.path != '/404'" />
   <Footer v-show="!loadingStatus" />
   <!-- 悬浮菜单 -->
   <Teleport to="body">

@@ -1,4 +1,4 @@
-import { getPostList, getPostDetail } from "../api/post.js";
+import { getPostDetail, getPostList } from "../api/post.js";
 
 /**
  * 获取 posts 目录下所有 Markdown 文件的路径
@@ -41,10 +41,9 @@ const comparePostPriority = (a, b) => {
  * 获取所有文章，读取其内容并解析 front matter
  * @returns {Promise<Object[]>} - 文章对象数组
  */
-export async function getAllPosts() {
+export async function getAllPosts(page = 1, page_size = 10) {
   try {
-    // 使用 getPostList 获取文章数据
-    const response = await getPostList()
+    const response = await getPostList(page, page_size)
     
     // 确保返回数据
     if (response && response.data) {
@@ -62,8 +61,13 @@ export async function getAllPosts() {
 }
 
 export const getPostContent = async (id) => {
-  const response = await getPostDetail(id);
-  return response.data.content;
+  try {
+    // console.log('获取文章详情成功:', response);
+    return (await getPostDetail(id)).data;
+  } catch (error) {
+    console.error('获取文章详情失败:', error)
+    return null
+  }
 }
 
 /**

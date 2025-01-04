@@ -1,10 +1,9 @@
-import request from ".";
+import request from "./index";
 
 // 获取文章列表
 export async function getPostList(page = 1, page_size = 10) {
     try {
         // 确保 request 返回的是 Promise
-      // 确保返回数据
         return await request({
           url: '/v1/posts',
           method: 'get',
@@ -20,9 +19,9 @@ export async function getPostList(page = 1, page_size = 10) {
 }
 
 // 获取文章详情
-export function getPostDetail(id) {
+export function getPostDetail(post_id) {
   return request({
-    url: `/v1/posts/${id}`,
+    url: `/v1/post/${post_id}`,
     method: 'get'
   })
 }

@@ -55,6 +55,7 @@
     "dayjs": "^1.11.13",
     "instantsearch.js": "^4.74.2",
     "lodash-es": "^4.17.21",
+    "markdown-it": "^14.1.0",
     "pinia": "^2.2.4",
     "pinia-plugin-persistedstate": "^3.2.3",
     "vue": "^3.5.11",

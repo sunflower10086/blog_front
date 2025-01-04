@@ -4,7 +4,7 @@ import { routeChange } from "@/utils/initTools.mjs";
 import { enhanceAppWithTabs } from "vitepress-plugin-tabs/client";
 import LazyLoader from "@/components/LazyLoader.vue";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-
+import NotFound from "@/views/NotFound.vue";
 // 根组件
 import App from "@/App.vue";
 // 全局样式
@@ -20,6 +20,9 @@ import InstantSearch from "vue-instantsearch/vue3/es";
 // Theme
 const Theme = {
   // extends: Theme,
+  NotFound: () => {
+    return h(NotFound);
+  },
   Layout: () => {
     return h(App);
   },
