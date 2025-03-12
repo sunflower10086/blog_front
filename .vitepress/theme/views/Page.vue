@@ -15,7 +15,7 @@
 import { Content } from "vitepress";
 
 const { frontmatter } = useData();
-console.log(frontmatter)
+console.log("frontmatter",frontmatter)
 </script>
 
 <style lang="scss" scoped>

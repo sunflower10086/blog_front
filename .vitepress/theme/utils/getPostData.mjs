@@ -1,4 +1,4 @@
-import { getPostDetail, getPostList } from "../api/post.js";
+import { getPostDetail, getPostList, getTagsList } from "../api/post.js";
 
 /**
  * 获取 posts 目录下所有 Markdown 文件的路径
@@ -39,12 +39,12 @@ const comparePostPriority = (a, b) => {
 
 /**
  * 获取所有文章，读取其内容并解析 front matter
- * @returns {Promise<Object[]>} - 文章对象数组
+ * @returns {Promise<{total: number, posts: ([]|*|*[])}>} - 文章对象数组
  */
 export async function getAllPosts(page = 1, page_size = 10) {
   try {
     const response = await getPostList(page, page_size)
-    
+    console.log("response",response)
     // 确保返回数据
     if (response && response.data) {
       return {
@@ -53,10 +53,16 @@ export async function getAllPosts(page = 1, page_size = 10) {
       }
     }
     
-    return []
+    return {
+      posts: [],
+      total: 0,
+    }
   } catch (error) {
     console.error('获取文章列表失败:', error)
-    return []
+    return {
+      posts: [],
+      total: 0,
+    }
   }
 }
 
@@ -75,7 +81,22 @@ export const getPostContent = async (id) => {
  * @param {Object[]} postData - 包含文章信息的数组
  * @returns {Object} - 包含标签统计信息的对象
  */
-export const getAllType = (postData) => {
+export const getAllType = async (postData) => {
+  // todo： 请求后端接口获得数据
+  try {
+    const response = await getTagsList()
+    console.log("tag response",response)
+    // 确保返回数据
+    if (response && response.data) {
+      console.log(response)
+    }
+  } catch (error) {
+    console.error('获取tag列表失败:', error)
+    return null
+  }
+  // const tags = await getTagsList()
+  // console.log("tags",tags)
+  // console.log("tags",tags.data)
   const tagData = {};
   // 遍历数据
   postData.map((item) => {
@@ -110,6 +131,7 @@ export const getAllType = (postData) => {
  * @returns {Object} - 包含标签统计信息的对象
  */
 export const getAllCategories = (postData) => {
+  // todo: 请求后端接口获得数据
   const catData = {};
   // 遍历数据
   postData.map((item) => {
@@ -143,6 +165,7 @@ export const getAllCategories = (postData) => {
  * @returns {Object} - 包含归档统计信息的对象
  */
 export const getAllArchives = (postData) => {
+  // todo： 目前你知道这是干什么的，先不管
   const archiveData = {};
   // 遍历数据
   postData.forEach((item) => {

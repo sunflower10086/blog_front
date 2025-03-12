@@ -35,6 +35,7 @@ import PostList from "../components/List/PostList.vue";
 import Pagination from "../components/Pagination.vue";
 import TypeBar from "../components/List/TypeBar.vue";
 import Banner from "../components/Banner.vue";
+import { getAllPosts } from "../utils/getPostData.mjs";
 
 const { theme } = useData();
 const store = mainStore();
@@ -111,6 +112,12 @@ const postData = computed(() => {
   return data ? data.slice(page * postSize, page * postSize + postSize) : [];
 });
 
+const postData1 = async () => {
+  let allPosts = await getAllPosts(props.page, 10);
+  console.log("allPosts:", allPosts);
+}
+
+postData1();
 
 
 // 恢复滚动位置

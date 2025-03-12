@@ -12,7 +12,9 @@ import { getThemeConfig } from "./init.mjs";
 import markdownConfig from "./theme/utils/markdownConfig.mjs";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import path from "path";
+import { ElNotification } from "element-plus";
 
 // 获取全局数据
 const postData = await getAllPosts();
@@ -101,12 +103,19 @@ export default withPwa(
         AutoImport({
           imports: ["vue", "vitepress"],
           dts: ".vitepress/auto-imports.d.ts",
+          resolvers: [ElementPlusResolver({
+            importStyle: 'sass',
+            // 关键：自动导入 API 组件
+            notifications: 'el',
+            message: 'el'
+          })],
         }),
         Components({
           dirs: [".vitepress/theme/components", ".vitepress/theme/views"],
           extensions: ["vue", "md"],
           include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
           dts: ".vitepress/components.d.ts",
+          resolvers: [ElementPlusResolver({importStyle: 'sass'})],
         }),
       ],
       resolve: {
@@ -143,6 +152,13 @@ export default withPwa(
           },
         },
       },
+    },
+    vue: {
+      template: {
+        compilerOptions: {
+          isCustomElement: tag => tag.startsWith('el-')
+        }
+      }
     },
     // PWA
     pwa: {
